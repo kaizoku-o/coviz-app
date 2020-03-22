@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 
 function Info(props) {
   return (
-      <div className="info">{props.content}
-      <button onClick={props.clickfunc}> Next </button> 
+      <div className="info">
+      {props.content}
+      <br /><br /> 
+      <button 
+      onClick={props.clickfunc}> Next </button> 
       </div>
   );
 }
