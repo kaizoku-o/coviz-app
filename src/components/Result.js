@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransitionGroup } from 'react-transition-group';
+import awesome_gif from '../gif/awesomeness.gif';
 
 function Result(props) {
   return (
@@ -15,6 +16,8 @@ function Result(props) {
     >
       <div>
         You answered <strong>{props.quizResult}</strong> questions correctly! :)
+        <br /> 
+        <img src={awesome_gif} className="Awesome_gif" alt="awesome_gif" />
       </div>
     </CSSTransitionGroup>
   );
