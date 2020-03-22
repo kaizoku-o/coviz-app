@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import quizQuestions from './api/quizQuestions';
 import Quiz from './components/Quiz';
 import Result from './components/Result';
-import logo from './svg/logo.svg';
+import logo from './png/covid.png';
 import './App.css';
 
 class App extends Component {
@@ -16,7 +16,9 @@ class App extends Component {
       answerOptions: [],
       answer: '',
       answersCount: {},
-      result: ''
+      result: '',
+      info:'',
+      correctAnswer:''
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
@@ -28,7 +30,9 @@ class App extends Component {
     );
     this.setState({
       question: quizQuestions[0].question,
-      answerOptions: shuffledAnswerOptions[0]
+      answerOptions: shuffledAnswerOptions[0],
+      info: quizQuestions[0].info,
+      correctAnswer: quizQuestions[0].correctAnswer
     });
   }
 
@@ -80,8 +84,10 @@ class App extends Component {
       counter: counter,
       questionId: questionId,
       question: quizQuestions[counter].question,
+      info: quizQuestions[counter].info,
       answerOptions: quizQuestions[counter].answers,
-      answer: ''
+      answer: '',
+      correctAnswer: quizQuestions[counter].correctAnswer
     });
   }
 
@@ -111,6 +117,8 @@ class App extends Component {
         question={this.state.question}
         questionTotal={quizQuestions.length}
         onAnswerSelected={this.handleAnswerSelected}
+	info={this.state.info}
+	correctAnswer={this.state.correctAnswer}
       />
     );
   }
@@ -124,7 +132,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>React Quiz</h2>
+          <h2>The COVID-19 Woke Quiz</h2>
         </div>
         {this.state.result ? this.renderResult() : this.renderQuiz()}
       </div>

@@ -77,6 +77,13 @@ body {
   opacity: 0;
 }
 
+/* Info Component */
+.info {
+  margin: 0;
+  padding: 0.5rem 2.5rem 1.5rem 2.5rem;
+  line-height: 1.6;
+}
+
 .radioCustomButton,
 .radioCustomLabel {
   display: inline-block;

@@ -1,88 +1,100 @@
 var quizQuestions = [
   {
-      question: "What franchise would you rather play a game from?",
+      question: "Does the novel coronavirus only seriously affects older people?",
+      info:`While statistically older people are more severely affected that is skewed by the fact that 
+	    they are part of the population that have pre-existing medical conditions. 
+	    The fact here is that the COVID-19 affects anyone with pre-existing medical conditions.
+	    People of all ages can be infected by the new coronavirus (2019-nCoV). Older people, and
+	    people with pre-existing medical conditions (such as asthma, diabetes, heart disease)
+	    appear to be more vulnerable to becoming severely ill with the virus.
+ 	    WHO advises people of all ages to take steps to protect themselves from the virus,
+	    for example by following good hand hygiene and good respiratory hygiene.`,
       answers: [
           {
-              type: "Microsoft",
-              content: "Halo"
+              type: "True",
+              content: "Yes"
           },
-          {
-              type: "Nintendo",
-              content: "Pokemon"
-          },
-          {
-              type: "Sony",
-              content: "Uncharted"
-          }
-      ]
+	  {
+	      type: "False",
+	      content: "No"
+	  }
+      ],
+      correctAnswer: "No"
   },
   {
-      question: "Which console would you prefer to play with friends?",
+      question: "Are antibiotics effective in preventing and treating the new coronavirus?",
+      info: "This is some more info",
       answers: [
           {
-              type: "Microsoft",
-              content: "X-Box"
+              type: "True",
+              content: "Yes"
           },
           {
-              type: "Nintendo",
-              content: "Nintendo 64"
-          },
-          {
-              type: "Sony",
-              content: "Playstation 1"
+              type: "False",
+              content: "No"
           }
-      ]
+      ],
+      correctAnswer: "No"
   },
   {
-      question: "Which of these racing franchises would you prefer to play a game from?",
+      question: "There are medicines to treat the new coronavirus?",
+      info: "This is some more more info",
       answers: [
           {
-              type: "Microsoft",
-              content: "Forza"
+              type: "True",
+              content: "Yes"
           },
           {
-              type: "Nintendo",
-              content: "Mario Kart"
-          },
-          {
-              type: "Sony",
-              content: "Gran Turismo"
+              type: "False",
+              content: "No"
           }
-      ]
+      ],
+      correctAnswer: "No"
   },
   {
-      question: "Which of these games do you think is best?",
+      question: "Wearing a surgical mask will protect you from getting coronavirus?",
+      info: "Pandas are black and white",
       answers: [
           {
-              type: "Microsoft",
-              content: "BioShock"
+              type: "True",
+              content: "Yes"
           },
           {
-              type: "Nintendo",
-              content: "The Legend of Zelda: Ocarina of Time"
-          },
-          {
-              type: "Sony",
-              content: "Final Fantasy VII"
+              type: "False",
+              content: "No"
           }
-      ]
+      ],
+      correctAnswer: "No"
   },
   {
-      question: "What console would you prefer to own?",
+      question: "Coronavirus is the deadliest virus known to man",
+      info: "tigers have stripes",
       answers: [
           {
-              type: "Microsoft",
-              content: "X-Box One"
+              type: "True",
+              content: "Yes"
           },
           {
-              type: "Nintendo",
-              content: "Wii U"
-          },
-          {
-              type: "Sony",
-              content: "Playstation 4"
+              type: "False",
+              content: "No"
           }
-      ]
+      ],
+      correctAnswer: "No"
+  },
+  {
+      question: "Can eating garlic help prevent infection with the new coronavirus?",
+      info: "kabeera speaking",
+      answers: [
+          {
+              type: "True",
+              content: "Yes"
+          },
+          {
+              type: "False",
+              content: "No"
+          }
+      ],
+      correctAnswer: "No"
   }
 ];
 
