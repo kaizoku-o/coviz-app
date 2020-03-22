@@ -19,10 +19,14 @@ class App extends Component {
       result: '',
       info:'',
       correctAnswer:'',
-      showInfo:false
+      showInfo:false,
+      result_dict: [],
+      showAnsStatus:false,
+      answerStatus:''
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -34,7 +38,9 @@ class App extends Component {
       answerOptions: shuffledAnswerOptions[0],
       info: quizQuestions[0].info,
       correctAnswer: quizQuestions[0].correctAnswer,
-      showInfo: false
+      showInfo: false,
+      showAnsStatus: false,
+      answerStatus: ''
     });
   }
 
@@ -61,10 +67,27 @@ class App extends Component {
   handleAnswerSelected(event) {
     this.setUserAnswer(event.currentTarget.value);
 
-    if (this.state.questionId < quizQuestions.length) {
-      setTimeout(() => this.setNextQuestion(), 300);
-    } else {
-      setTimeout(() => this.setResults(this.getResults()), 300);
+    this.state.showAnsStatus = true
+    if (event.currentTarget.value === this.state.correctAnswer)
+    {
+        this.state.result_dict.push(1)
+	this.state.answerStatus = "Correct :)"
+    }
+    else
+    {
+        this.state.result_dict.push(0)
+	this.state.answerStatus = "Wrong :("
+    } 
+  }
+
+  handleClick() {
+    if (this.state.questionId < quizQuestions.length) 
+    {
+        setTimeout(() => this.setNextQuestion(), 300);
+    } 
+    else 
+    {
+       setTimeout(() => this.setResults(this.getResults()), 300);
     }
   }
 
@@ -91,6 +114,8 @@ class App extends Component {
       answerOptions: quizQuestions[counter].answers,
       answer: '',
       correctAnswer: quizQuestions[counter].correctAnswer,
+      showAnsStatus:false,
+      answerStatus:'',
       showInfo: false
     });
   }
@@ -105,11 +130,17 @@ class App extends Component {
   }
 
   setResults(result) {
-    if (result.length === 1) {
-      this.setState({ result: result[0] });
-    } else {
-      this.setState({ result: 'Undetermined' });
+    var res_counter = 0
+    var index = 0;
+    for (index = 0; index < this.state.result_dict.length; index++)
+    {
+        if (this.state.result_dict[index] === 1)
+	{
+	    res_counter++;
+	}
     }
+
+    this.setState({ result: res_counter.toString() });
   }
 
   renderQuiz() {
@@ -122,8 +153,11 @@ class App extends Component {
         questionTotal={quizQuestions.length}
         onAnswerSelected={this.handleAnswerSelected}
 	info={this.state.info}
+	clickfunc={this.handleClick}
 	correctAnswer={this.state.correctAnswer}
 	showInfo={this.state.showInfo}
+	showAnsStatus={this.state.showAnsStatus}
+	answerStatus={this.state.answerStatus}
       />
     );
   }

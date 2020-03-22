@@ -5,6 +5,7 @@ import Question from '../components/Question';
 import Info from '../components/Info';
 import QuestionCount from '../components/QuestionCount';
 import AnswerOption from '../components/AnswerOption';
+import AnswerStatus from '../components/AnswerStatus';
 
 function Quiz(props) {
   function renderAnswerOptions(key) {
@@ -36,7 +37,8 @@ function Quiz(props) {
         <ul className="answerOptions">
           {props.answerOptions.map(renderAnswerOptions)}
         </ul>
-        {props.showInfo && <Info content={props.info} />}
+	{props.showAnsStatus && <AnswerStatus content={props.answerStatus} />}
+        {props.showInfo && <Info content={props.info} clickfunc={props.clickfunc} />}
       </div>
     </CSSTransitionGroup>
   );
@@ -47,10 +49,13 @@ Quiz.propTypes = {
   answerOptions: PropTypes.array.isRequired,
   question: PropTypes.string.isRequired,
   info: PropTypes.string.isRequired,
+  clickfunc: PropTypes.func.isRequired,
   questionId: PropTypes.number.isRequired,
   questionTotal: PropTypes.number.isRequired,
   onAnswerSelected: PropTypes.func.isRequired,
-  showInfo: PropTypes.bool.isRequired
+  showInfo: PropTypes.bool.isRequired,
+  showAnsStatus: PropTypes.bool.isRequired,
+  answerStatus: PropTypes.string.isRequired
 };
 
 export default Quiz;
