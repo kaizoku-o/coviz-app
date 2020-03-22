@@ -147,7 +147,7 @@ var quizQuestions = [
       correctAnswer: "True"
   },
   {
-      question: "Wearing rubber gloves while out in public is effective in preventing the new coronavirus infection",
+      question: "Wearing rubber gloves while out in public is effective in preventing the new coronavirus infection.",
       info: `That statement is incorrecnt. Regularly washing your bare hands offers more protection against catching COVID-19 
       than wearing rubber gloves. You can still pick up COVID-19 contamination on rubber gloves. If 
       you then touch your face, the contamination goes from your glove to your face and can infect you. `,
