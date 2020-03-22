@@ -18,7 +18,8 @@ class App extends Component {
       answersCount: {},
       result: '',
       info:'',
-      correctAnswer:''
+      correctAnswer:'',
+      showInfo:false
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
@@ -32,7 +33,8 @@ class App extends Component {
       question: quizQuestions[0].question,
       answerOptions: shuffledAnswerOptions[0],
       info: quizQuestions[0].info,
-      correctAnswer: quizQuestions[0].correctAnswer
+      correctAnswer: quizQuestions[0].correctAnswer,
+      showInfo: false
     });
   }
 
@@ -72,7 +74,8 @@ class App extends Component {
         ...state.answersCount,
         [answer]: (state.answersCount[answer] || 0) + 1
       },
-      answer: answer
+      answer: answer,
+      showInfo:true
     }));
   }
 
@@ -87,7 +90,8 @@ class App extends Component {
       info: quizQuestions[counter].info,
       answerOptions: quizQuestions[counter].answers,
       answer: '',
-      correctAnswer: quizQuestions[counter].correctAnswer
+      correctAnswer: quizQuestions[counter].correctAnswer,
+      showInfo: false
     });
   }
 
@@ -119,6 +123,7 @@ class App extends Component {
         onAnswerSelected={this.handleAnswerSelected}
 	info={this.state.info}
 	correctAnswer={this.state.correctAnswer}
+	showInfo={this.state.showInfo}
       />
     );
   }
