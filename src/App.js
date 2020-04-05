@@ -21,12 +21,16 @@ class App extends Component {
       correctAnswer:'',
       showInfo:false,
       result_dict: [],
+      question_stats_dict: {},
+      unique_ip: {},
       showAnsStatus:false,
       answerStatus:''
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.updateCounts = this.updateCounts.bind(this);
+    this.getIP = this.getIP.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +68,31 @@ class App extends Component {
     return array;
   }
 
+  getIP() {
+    fetch("https://api.ipify.org?format=json").then(response => { return response.json();}, "jsonp")
+      .then(res => {console.log(res.ip)})
+      .catch(err => console.log(err))
+  }
+
+  updateCounts(questionNo, answer) {
+    if (this.getIP() in this.state.unique_ip) {
+      return;
+    }
+    this.state.unique_ip[this.getIP()] = 0;
+
+    if (answer === 1) {
+    	console.log("Huzzah!")
+    	// write new count to db
+	if (questionNo in this.state.question_stats_dict) {
+	  this.state.question_stats_dict[questionNo][0] += 1;
+	  this.state.question_stats_dict[questionNo][1] += 1;
+	}
+	else {
+	  this.state.question_stats_dict[questionNo] = [0, 0];
+	}
+    }
+  }
+
   handleAnswerSelected(event) {
     this.setUserAnswer(event.currentTarget.value);
 
@@ -72,6 +101,7 @@ class App extends Component {
     {
         this.state.result_dict.push(1)
 	this.state.answerStatus = "Correct :)"
+	this.updateCounts(this.state.questionId, 1)
     }
     else
     {
