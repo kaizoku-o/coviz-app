@@ -23,6 +23,7 @@ class App extends Component {
       result_dict: [],
       question_stats_dict: {},
       unique_ip: {},
+      graph_data: [],
       showAnsStatus:false,
       answerStatus:''
     };
@@ -33,10 +34,28 @@ class App extends Component {
     this.getIP = this.getIP.bind(this);
   }
 
+
   componentDidMount() {
     const shuffledAnswerOptions = quizQuestions.map(question =>
       this.shuffleArray(question.answers)
     );
+
+
+    const request = require('request')
+
+    request.post('http://18.190.121.208:9580/api', {
+          json: {
+              command: 'get'
+          }
+    }, (error, res, body) => {
+        if (error) {
+          console.error(error)
+          return
+        }
+        console.log(`statusCode: ${res.statusCode}`)
+        console.log("Body is: ", body)
+    })
+
     this.setState({
       question: quizQuestions[0].question,
       answerOptions: shuffledAnswerOptions[0],
@@ -76,21 +95,24 @@ class App extends Component {
 
   updateCounts(questionNo, answer) {
     if (this.getIP() in this.state.unique_ip) {
-      return;
+    //  return;
+    	console.log("returning")
     }
+    console.log("Question no is " + questionNo.toString())
+    console.log("Answer is "  + answer.toString())
     this.state.unique_ip[this.getIP()] = 0;
 
-    if (answer === 1) {
-    	console.log("Huzzah!")
-    	// write new count to db
-	if (questionNo in this.state.question_stats_dict) {
-	  this.state.question_stats_dict[questionNo][0] += 1;
-	  this.state.question_stats_dict[questionNo][1] += 1;
-	}
-	else {
-	  this.state.question_stats_dict[questionNo] = [0, 0];
-	}
-    }
+    // write new count to db
+    if (questionNo in this.state.question_stats_dict) {
+      console.log("quest exists")
+      // update correct count
+      this.state.question_stats_dict[questionNo] = 
+         [this.state.question_stats_dict[questionNo][0] += answer,
+	  this.state.question_stats_dict[questionNo][1]++]
+     }
+     else {
+       this.state.question_stats_dict[questionNo] = [answer, 1];
+     }
   }
 
   handleAnswerSelected(event) {
@@ -107,6 +129,7 @@ class App extends Component {
     {
         this.state.result_dict.push(0)
 	this.state.answerStatus = "Wrong :("
+	this.updateCounts(this.state.questionId, 0)
     } 
   }
 
@@ -159,6 +182,11 @@ class App extends Component {
     return answersCountKeys.filter(key => answersCount[key] === maxAnswerCount);
   }
 
+  random_rgba() { 
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    return "#" + randomColor;
+  }
+
   setResults(result) {
     var res_counter = 0
     var index = 0;
@@ -170,6 +198,21 @@ class App extends Component {
 	}
     }
 
+    this.state.graph_data.push(
+	["Question", "% Correct", { role: "style" }]
+    );
+    console.log(this.state.question_stats_dict);
+    console.log(this.state.question_stats_dict.length)
+
+    for (var i = 1; i <= quizQuestions.length; i++)
+    {
+    	var percent_right = (this.state.question_stats_dict[i][0] / this.state.question_stats_dict[i][1]) * 100;
+	var color = this.random_rgba();
+	console.log([i.toString(), percent_right, color]);
+    	this.state.graph_data.push([i.toString(), percent_right, color]);	
+    }
+    console.log(this.state.graph_data)
+    
     this.setState({ result: res_counter.toString() });
   }
 
@@ -193,7 +236,12 @@ class App extends Component {
   }
 
   renderResult() {
-    return <Result quizResult={this.state.result} />;
+    return (
+      <Result 
+        quizResult={this.state.result}
+        graphData={this.state.graph_data} 
+      />
+    );
   }
 
   render() {
