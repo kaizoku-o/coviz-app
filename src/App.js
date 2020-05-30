@@ -53,7 +53,13 @@ class App extends Component {
           return
         }
         console.log(`statusCode: ${res.statusCode}`)
-        console.log("Body is: ", body)
+	body = body.replace(/'/g, '"') 
+	var bodyJSON = JSON.parse(body.slice(1, -1))
+        console.log("Body is: ", bodyJSON)
+	  this.setState({
+	  question_stats_dict: bodyJSON["stats"],
+	  unique_ip: bodyJSON["ip"]
+	  })
     })
 
     this.setState({
@@ -94,9 +100,11 @@ class App extends Component {
   }
 
   updateCounts(questionNo, answer) {
+
+    console.log(this.state.unique_ip)
     if (this.getIP() in this.state.unique_ip) {
-    //  return;
     	console.log("returning")
+        return;
     }
     console.log("Question no is " + questionNo.toString())
     console.log("Answer is "  + answer.toString())
