@@ -62,9 +62,10 @@ var quizQuestions = [
       correctAnswer: "False"
   },
   {
-      question: "Wearing a surgical mask will protect you from getting coronavirus.",
-      info: `Masks do not prevent new infections. If you are already sick, your doctor may 
-      	    ask you to wear one. Otherwise leave masks for health professionals.`,
+      question: "The new coronavirus was deliberately created or released by people.",
+      info: `Viruses can change over time. Occasionally, a disease outbreak happens when a virus 
+      that is common in an animal such as a pig, bat or bird undergoes mutation and passes to humans. 
+      This is likely how the new coronavirus came to be.`,
       answers: [
           {
               type: "True",
@@ -79,7 +80,7 @@ var quizQuestions = [
   },
   {
       question: "Is coronavirus the deadliest virus known to man?",
-      info: `Although SARS-CoV-2 is 10-35 times more lethal than influenza, it is not 
+      info: `Although SARS-CoV-2 is much more lethal than influenza, it is not 
       	    the deadliest virus that people have faced. Others, such as Ebola, have higher 
 	    mortality rates.`,
       answers: [
@@ -147,10 +148,10 @@ var quizQuestions = [
       correctAnswer: "True"
   },
   {
-      question: "Wearing rubber gloves while out in public is effective in preventing the new coronavirus infection.",
-      info: `That statement is incorrecnt. Regularly washing your bare hands offers more protection against catching COVID-19 
-      than wearing rubber gloves. You can still pick up COVID-19 contamination on rubber gloves. If 
-      you then touch your face, the contamination goes from your glove to your face and can infect you. `,
+      question: "Wearing protective face coverings is helpful in mitigating the spread of COVID-19.",
+      info: `As per the updated guidelines from the CDC wearing masks while out in public spaces can reduce the 
+      probability of the infected spreading the virus to the others. It is advisable for everyone to wear face coverings 
+      as there's a high chance of people being asymtomatic carriers.`,
       answers: [
           {
               type: "True",
@@ -161,14 +162,14 @@ var quizQuestions = [
               content: "False"
           }
       ],
-      correctAnswer: "False"
+      correctAnswer: "True"
   },
   {
       question: "Is it safe to receive a letter or a package from China?",
       info: `Yes, it is safe. People receiving packages from China are not at risk of 
       contracting the new coronavirus. From previous analysis, we know coronaviruses do not 
       survive long on objects, such as letters or packages. The maximum they can survive is 48 hours
-      on hard surfaces`,
+      on hard surfaces.`,
       answers: [
           {
               type: "True",
