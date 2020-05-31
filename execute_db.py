@@ -29,8 +29,10 @@ def insert_stats(db, cursor, values):
         db.rollback()
 
 def update_stats(db, cursor, values):
-    query = "UPDATE coviz SET total_count=" + values[1] + ",\
+    query = "UPDATE covid SET total_count=" + values[1] + ",\
             correct_count=" + values[2] + " WHERE quest_no=" + values[0]
+
+    print(query)
     try:
         cursor.execute(query)
         db.commit()
@@ -49,8 +51,10 @@ def get_question_stats_table(cursor):
     query = QUERIES["GET_QUESTION_STATS"]
     cursor.execute(query)
     result = cursor.fetchall()
-    result = [[int(y) for y in x] for x in result]
-    return result
+    result_dict = {}
+    for x in result:
+        result_dict[str(x[0])] = [x[1], x[2]]
+    return result_dict
 
 def run():
     parser = argparse.ArgumentParser(description="MySQLdb service")

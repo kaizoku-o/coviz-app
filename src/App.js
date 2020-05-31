@@ -25,7 +25,8 @@ class App extends Component {
       unique_ip: {},
       graph_data: [],
       showAnsStatus:false,
-      answerStatus:''
+      answerStatus:'',
+      currentIP: ''
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
@@ -33,6 +34,12 @@ class App extends Component {
     this.updateCounts = this.updateCounts.bind(this);
     this.getIP = this.getIP.bind(this);
   }
+  async  getIP() {
+    await fetch("https://api.ipify.org?format=json").then(response => { return response.json();}, "jsonp")
+      .then(res => {console.log(res.ip); this.state.currentIP = res.ip})
+      .catch(err => console.log(err))
+  }
+
 
 
   componentDidMount() {
@@ -55,11 +62,11 @@ class App extends Component {
         console.log(`statusCode: ${res.statusCode}`)
 	body = body.replace(/'/g, '"') 
 	var bodyJSON = JSON.parse(body.slice(1, -1))
-        console.log("Body is: ", bodyJSON)
-	  this.setState({
-	  question_stats_dict: bodyJSON["stats"],
-	  unique_ip: bodyJSON["ip"]
-	  })
+	this.setState({
+	    question_stats_dict: bodyJSON["stats"],
+	    unique_ip: bodyJSON["ip"]
+	})
+	this.getIP()
     })
 
     this.setState({
@@ -93,34 +100,68 @@ class App extends Component {
     return array;
   }
 
-  getIP() {
-    fetch("https://api.ipify.org?format=json").then(response => { return response.json();}, "jsonp")
-      .then(res => {console.log(res.ip)})
-      .catch(err => console.log(err))
-  }
-
   updateCounts(questionNo, answer) {
 
-    console.log(this.state.unique_ip)
-    if (this.getIP() in this.state.unique_ip) {
+    if (this.state.unique_ip.includes(String(this.state.currentIP))) {
     	console.log("returning")
         return;
     }
+    const request = require('request')
+
+    request.post('http://18.190.121.208:9580/api', {
+          json: {
+              command: 'insert',
+	      values: this.state.currentIP
+          }
+    }, (error, res, body) => {
+        if (error) {
+          console.error(error)
+          return
+        }
+    })
+
     console.log("Question no is " + questionNo.toString())
     console.log("Answer is "  + answer.toString())
-    this.state.unique_ip[this.getIP()] = 0;
 
     // write new count to db
     if (questionNo in this.state.question_stats_dict) {
       console.log("quest exists")
       // update correct count
       this.state.question_stats_dict[questionNo] = 
-         [this.state.question_stats_dict[questionNo][0] += answer,
-	  this.state.question_stats_dict[questionNo][1]++]
-     }
-     else {
-       this.state.question_stats_dict[questionNo] = [answer, 1];
-     }
+         [this.state.question_stats_dict[questionNo][0]++,
+	  this.state.question_stats_dict[questionNo][1] += answer]
+    
+      request.post('http://18.190.121.208:9580/api', {
+          json: {
+              command: 'update',
+	      values: String(questionNo) + " " +
+	      	String(this.state.question_stats_dict[questionNo][0])
+		+ " " +
+		String(this.state.question_stats_dict[questionNo][1])
+          }
+      }, (error, res, body) => {
+         if (error) {
+            console.error(error)
+            return
+         }
+      })
+
+    }
+    else {
+        this.state.question_stats_dict[questionNo] = [1, answer];
+        request.post('http://18.190.121.208:9580/api', {
+           json: {
+               command: 'insert',
+	       values: String(questionNo) + " " + 
+	       	String(1) + " " + String(answer)  
+           }
+        }, (error, res, body) => {
+          if (error) {
+            console.error(error)
+            return
+          }
+       })
+    }
   }
 
   handleAnswerSelected(event) {
@@ -214,7 +255,8 @@ class App extends Component {
 
     for (var i = 1; i <= quizQuestions.length; i++)
     {
-    	var percent_right = (this.state.question_stats_dict[i][0] / this.state.question_stats_dict[i][1]) * 100;
+    	var percent_right = (this.state.question_stats_dict[String(i)][0] / 
+		this.state.question_stats_dict[String(i)][1]) * 100;
 	var color = this.random_rgba();
 	console.log([i.toString(), percent_right, color]);
     	this.state.graph_data.push([i.toString(), percent_right, color]);	
