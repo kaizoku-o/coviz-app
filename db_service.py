@@ -8,7 +8,6 @@ CORS(app)
 
 @app.route('/api', methods=['GET', 'POST'])
 def api():
-    print(request.get_json())
     if request.is_json:
         command = "~/execute_db.py -op " + request.get_json()["command"]
         result = subprocess.getoutput(command)
@@ -16,8 +15,7 @@ def api():
     else:
         result = "Request is not in valid json format"
 
-    print(result)
-    return result
+    return jsonify(result)
 
 
 if __name__ == '__main__':
