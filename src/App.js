@@ -102,6 +102,7 @@ class App extends Component {
 
   updateCounts(questionNo, answer) {
 
+    console.log("Stats dict: ", this.state.question_stats_dict)
     if (this.state.unique_ip.includes(String(this.state.currentIP))) {
     	console.log("returning")
         return;
@@ -128,8 +129,9 @@ class App extends Component {
       console.log("quest exists")
       // update correct count
       this.state.question_stats_dict[questionNo] = 
-         [this.state.question_stats_dict[questionNo][0]++,
+         [this.state.question_stats_dict[questionNo][0] += 1,
 	  this.state.question_stats_dict[questionNo][1] += answer]
+     console.log("Stats dict after update: ", this.state.question_stats_dict)
     
       request.post('http://18.190.121.208:9580/api', {
           json: {
@@ -255,8 +257,8 @@ class App extends Component {
 
     for (var i = 1; i <= quizQuestions.length; i++)
     {
-    	var percent_right = (this.state.question_stats_dict[String(i)][0] / 
-		this.state.question_stats_dict[String(i)][1]) * 100;
+    	var percent_right = (this.state.question_stats_dict[String(i)][1] / 
+		this.state.question_stats_dict[String(i)][0]) * 100;
 	var color = this.random_rgba();
 	console.log([i.toString(), percent_right, color]);
     	this.state.graph_data.push([i.toString(), percent_right, color]);	
